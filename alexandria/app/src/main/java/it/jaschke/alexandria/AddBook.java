@@ -27,13 +27,13 @@ import it.jaschke.alexandria.services.DownloadImage;
 
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "INTENT_TO_SCAN_ACTIVITY";
-    private EditText ean;
+    private OnFragmentInteractionListener mListener;
+    public EditText ean;
     private final int LOADER_ID = 1;
     private View rootView;
     private final String EAN_CONTENT="eanContent";
     private static final String SCAN_FORMAT = "scanFormat";
     private static final String SCAN_CONTENTS = "scanContents";
-
     private String mScanFormat = "Format:";
     private String mScanContents = "Contents:";
 
@@ -78,30 +78,14 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
                     clearFields();
                     return;
                 }
-                //Once we have an ISBN, start a book intent
-                Intent bookIntent = new Intent(getActivity(), BookService.class);
-                bookIntent.putExtra(BookService.EAN, ean);
-                bookIntent.setAction(BookService.FETCH_BOOK);
-                getActivity().startService(bookIntent);
-                AddBook.this.restartLoader();
+                startBookService(ean);
             }
         });
 
         rootView.findViewById(R.id.scan_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // This is the callback method that the system will invoke when your button is
-                // clicked. You might do this by launching another app or by including the
-                //functionality directly in this app.
-                // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
-                // are using an external app.
-                //when you're done, remove the toast below.
-                Context context = getActivity();
-                CharSequence text = "This button should let you scan a book for its barcode!";
-                int duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
+               mListener.startScanActivity();
 
             }
         });
@@ -132,7 +116,16 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         return rootView;
     }
 
-    private void restartLoader(){
+    public void startBookService(String ean){
+        //Once we have an ISBN, start a book intent
+        Intent bookIntent = new Intent(getActivity(), BookService.class);
+        bookIntent.putExtra(BookService.EAN, ean);
+        bookIntent.setAction(BookService.FETCH_BOOK);
+        getActivity().startService(bookIntent);
+        AddBook.this.restartLoader();
+    }
+
+    public void restartLoader(){
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
@@ -203,5 +196,21 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         activity.setTitle(R.string.scan);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                                                 + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void startScanActivity();
     }
 }

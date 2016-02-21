@@ -23,15 +23,22 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="@string/title_activity_settings"
             android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity android:name=".BarcodeCaptureActivity"
+                  android:label="Read Barcode"/>
 
-
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
 
         <provider
             android:name=".data.BookProvider"
