@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,24 +31,24 @@ import it.jaschke.alexandria.services.DownloadImage;
 public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "INTENT_TO_SCAN_ACTIVITY";
     private OnFragmentInteractionListener mListener;
+    private ConnectivityManager connectivityManager = null;
     public EditText ean;
     private final int LOADER_ID = 1;
     private View rootView;
-    private final String EAN_CONTENT="eanContent";
-    private static final String SCAN_FORMAT = "scanFormat";
+    private final        String EAN_CONTENT   = "eanContent";
+    private static final String SCAN_FORMAT   = "scanFormat";
     private static final String SCAN_CONTENTS = "scanContents";
-    private String mScanFormat = "Format:";
-    private String mScanContents = "Contents:";
+    private              String mScanFormat   = "Format:";
+    private              String mScanContents = "Contents:";
 
 
-
-    public AddBook(){
+    public AddBook() {
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(ean!=null) {
+        if (ean != null) {
             outState.putString(EAN_CONTENT, ean.getText().toString());
         }
     }
@@ -117,12 +120,22 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     }
 
     public void startBookService(String ean){
-        //Once we have an ISBN, start a book intent
-        Intent bookIntent = new Intent(getActivity(), BookService.class);
-        bookIntent.putExtra(BookService.EAN, ean);
-        bookIntent.setAction(BookService.FETCH_BOOK);
-        getActivity().startService(bookIntent);
-        AddBook.this.restartLoader();
+        if (isConnected(getActivity())){
+            //Once we have an ISBN, start a book intent
+            Intent bookIntent = new Intent(getActivity(), BookService.class);
+            bookIntent.putExtra(BookService.EAN, ean);
+            bookIntent.setAction(BookService.FETCH_BOOK);
+            getActivity().startService(bookIntent);
+            AddBook.this.restartLoader();
+        }else{
+            Log.e(TAG, "Not internet connection");
+            this.ean.setText("");
+            CharSequence text = "Sorry, there is not internet connection!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(getActivity(), text, duration);
+            toast.show();
+        }
     }
 
     public void restartLoader(){
@@ -161,11 +174,15 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ((TextView) rootView.findViewById(R.id.bookSubTitle)).setText(bookSubTitle);
 
         String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
+        if(authors != null && !authors.isEmpty()){
+            String[] authorsArr = authors.split(",");
+            ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+            ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
+        }
+
+
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
-        if(Patterns.WEB_URL.matcher(imgUrl).matches()){
+        if(imgUrl != null && !imgUrl.isEmpty() && Patterns.WEB_URL.matcher(imgUrl).matches()){
             new DownloadImage((ImageView) rootView.findViewById(R.id.bookCover)).execute(imgUrl);
             rootView.findViewById(R.id.bookCover).setVisibility(View.VISIBLE);
         }
@@ -212,5 +229,13 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     public interface OnFragmentInteractionListener {
         void startScanActivity();
+    }
+
+    public boolean isConnected(Context context) {
+        connectivityManager = (ConnectivityManager) context.getSystemService(
+                Context.CONNECTIVITY_SERVICE
+        );
+        final NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
+        return  ni != null && ni.isConnectedOrConnecting();
     }
 }

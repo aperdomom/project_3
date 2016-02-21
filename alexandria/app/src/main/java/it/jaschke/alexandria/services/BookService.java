@@ -2,8 +2,11 @@ package it.jaschke.alexandria.services;
 
 import android.app.IntentService;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -33,10 +36,11 @@ public class BookService extends IntentService {
 
     private final String LOG_TAG = BookService.class.getSimpleName();
 
-    public static final String FETCH_BOOK = "it.jaschke.alexandria.services.action.FETCH_BOOK";
+    public static final String FETCH_BOOK  = "it.jaschke.alexandria.services.action.FETCH_BOOK";
     public static final String DELETE_BOOK = "it.jaschke.alexandria.services.action.DELETE_BOOK";
 
-    public static final String EAN = "it.jaschke.alexandria.services.extra.EAN";
+    public static final String              EAN                 = "it.jaschke.alexandria.services.extra.EAN";
+    private             ConnectivityManager connectivityManager = null;
 
     public BookService() {
         super("Alexandria");
