@@ -40,4 +40,7 @@
     <string name="configure">Configure</string>
     <string name="add_widget">Add widget</string>
     <string name="content_desc_share">Share</string>
+    <string name="no_team">No team</string>
+    <string name="content_desc_home">Home team</string>
+    <string name="content_desc_away">Away team</string>
 </resources>

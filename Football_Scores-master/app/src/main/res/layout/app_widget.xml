@@ -6,7 +6,7 @@
                 android:orientation="vertical"
                 android:gravity="center"
     android:id="@+id/widget_linear">
-  
+
     <TextView
         android:id="@+id/tite_text"
         android:layout_width="wrap_content"
@@ -14,7 +14,7 @@
         android:textStyle="bold|italic"
         android:textColor="@color/orange01"
         android:textSize="12sp"
-        android:text="Today"
+        android:text="@string/today"
         android:layout_marginBottom="5dp"/>
     <LinearLayout android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
@@ -27,14 +27,13 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:text="Home"
+        android:text="@string/no_team"
         android:textSize="12sp"/>
 
     <TextView
         android:id="@+id/goals_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/appwidget_text"
         android:text="0-0"
         android:textColor="@color/orange01"
         android:textSize="15sp"
@@ -49,7 +48,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textSize="12sp"
-        android:text="Away"/>
+        android:text="@string/no_team"/>
 
     </LinearLayout>
 </LinearLayout>
