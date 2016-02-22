@@ -3,34 +3,53 @@
                 android:layout_height="match_parent"
                 android:padding="@dimen/widget_margin"
                 android:background="@color/white"
-                android:orientation="horizontal"
-                android:gravity="center">
-    <ImageView
-        android:id="@+id/image_team1"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/arsenal"/>
+                android:orientation="vertical"
+                android:gravity="center"
+    android:id="@+id/widget_linear">
+  
+    <TextView
+        android:id="@+id/tite_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold|italic"
+        android:textColor="@color/orange01"
+        android:textSize="12sp"
+        android:text="Today"
+        android:layout_marginBottom="5dp"/>
+    <LinearLayout android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:padding="@dimen/widget_margin"
+                  android:background="@color/white"
+                  android:orientation="horizontal"
+                  android:gravity="center">
+    <TextView
+        android:id="@+id/home_name_text"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:text="Home"
+        android:textSize="12sp"/>
 
     <TextView
-        android:id="@+id/appwidget_text"
+        android:id="@+id/goals_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/appwidget_text"
-        android:text="2-2"
+        android:text="0-0"
         android:textColor="@color/orange01"
-        android:textSize="18sp"
-        android:textStyle="bold|italic"
-        android:layout_marginTop="10dp"
+        android:textSize="15sp"
         android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"/>
 
-    <ImageView
-        android:id="@+id/image_team2"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/arsenal"/>
+    <TextView
+        android:id="@+id/away_name_text"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:text="Away"/>
 
-
+    </LinearLayout>
 </LinearLayout>
