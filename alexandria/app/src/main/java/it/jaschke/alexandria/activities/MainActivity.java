@@ -1,4 +1,4 @@
-package it.jaschke.alexandria;
+package it.jaschke.alexandria.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,14 +21,19 @@ import android.widget.Toast;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import it.jaschke.alexandria.fragments.AboutFragment;
+import it.jaschke.alexandria.fragments.AddBookFragment;
+import it.jaschke.alexandria.fragments.BookDetailFragment;
+import it.jaschke.alexandria.fragments.ListOfBooksFragment;
+import it.jaschke.alexandria.fragments.NavigationDrawerFragment;
+import it.jaschke.alexandria.R;
 import it.jaschke.alexandria.api.Callback;
-import it.jaschke.alexandria.services.BookService;
 
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks,
                    Callback,
-                   AddBook.OnFragmentInteractionListener{
+                   AddBookFragment.OnFragmentInteractionListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -78,13 +83,13 @@ public class MainActivity extends ActionBarActivity
         switch (position){
             default:
             case 0:
-                nextFragment = new ListOfBooks();
+                nextFragment = new ListOfBooksFragment();
                 break;
             case 1:
-                nextFragment = new AddBook();
+                nextFragment = new AddBookFragment();
                 break;
             case 2:
-                nextFragment = new About();
+                nextFragment = new AboutFragment();
                 break;
 
         }
@@ -144,9 +149,9 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onItemSelected(String ean) {
         Bundle args = new Bundle();
-        args.putString(BookDetail.EAN_KEY, ean);
+        args.putString(BookDetailFragment.EAN_KEY, ean);
 
-        BookDetail fragment = new BookDetail();
+        BookDetailFragment fragment = new BookDetailFragment();
         fragment.setArguments(args);
 
         int id = R.id.container;
@@ -209,8 +214,8 @@ public class MainActivity extends ActionBarActivity
                         id = R.id.right_container;
                     }
                     nextFragment =  fragmentManager.findFragmentById(id);
-                    if(nextFragment instanceof AddBook){
-                        ((AddBook)nextFragment).ean.setText(barcode.displayValue);
+                    if(nextFragment instanceof AddBookFragment){
+                        ((AddBookFragment)nextFragment).ean.setText(barcode.displayValue);
                     }
                 } else {
                     Log.d(TAG, "No barcode captured, intent data is null");

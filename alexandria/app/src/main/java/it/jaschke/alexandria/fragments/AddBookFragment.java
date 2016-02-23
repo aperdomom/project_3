@@ -1,4 +1,4 @@
-package it.jaschke.alexandria;
+package it.jaschke.alexandria.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,12 +23,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import it.jaschke.alexandria.R;
 import it.jaschke.alexandria.data.AlexandriaContract;
 import it.jaschke.alexandria.services.BookService;
 import it.jaschke.alexandria.services.DownloadImage;
 
 
-public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class AddBookFragment
+        extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String TAG = "INTENT_TO_SCAN_ACTIVITY";
     private OnFragmentInteractionListener mListener;
     private ConnectivityManager connectivityManager = null;
@@ -42,7 +44,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private              String mScanContents = "Contents:";
 
 
-    public AddBook() {
+    public AddBookFragment() {
     }
 
     @Override
@@ -126,7 +128,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             bookIntent.putExtra(BookService.EAN, ean);
             bookIntent.setAction(BookService.FETCH_BOOK);
             getActivity().startService(bookIntent);
-            AddBook.this.restartLoader();
+            AddBookFragment.this.restartLoader();
         }else{
             Log.e(TAG, "Not internet connection");
             this.ean.setText("");
