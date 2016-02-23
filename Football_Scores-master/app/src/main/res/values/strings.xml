@@ -43,4 +43,18 @@
     <string name="no_team">No team</string>
     <string name="content_desc_home">Home team</string>
     <string name="content_desc_away">Away team</string>
+
+
+    <string name="label_seria_a">Seria A</string>
+    <string name="label_premier_league">Premier League</string>
+    <string name="label_uefa">UEFA Champions League</string>
+    <string name="label_primera">Primera Division</string>
+    <string name="label_bundes">Bundesliga</string>
+    <string name="label_not_know">Not known League Please report</string>
+    <string name="label_group_stages">Group Stages, Matchday : 6</string>
+    <string name="label_first_round">First Knockout round</string>
+    <string name="label_quarter">QuarterFinal</string>
+    <string name="label_semi">SemiFinal</string>
+    <string name="label_final">Final</string>
+    <string name="label_match_day">Matchday : </string>
 </resources>
