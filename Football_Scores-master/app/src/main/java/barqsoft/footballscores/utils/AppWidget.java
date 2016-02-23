@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.utils;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -13,6 +13,11 @@ import android.widget.RemoteViews;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import barqsoft.footballscores.R;
+import barqsoft.footballscores.activities.AppWidgetConfigureActivity;
+import barqsoft.footballscores.activities.MainActivity;
+import barqsoft.footballscores.db.DatabaseContract;
+
 /**
  * Implementation of App Widget functionality.
  * App Widget Configuration implemented in {@link AppWidgetConfigureActivity AppWidgetConfigureActivity}
@@ -20,7 +25,7 @@ import java.util.Date;
 public class AppWidget
         extends AppWidgetProvider {
 
-    static void updateAppWidget(
+    public static void updateAppWidget(
             Context context, AppWidgetManager appWidgetManager,
             int appWidgetId) {
 
@@ -36,7 +41,6 @@ public class AppWidget
                                                  null,
                                                  new String[]{strDate},
                                                  DatabaseContract.scores_table.DATE_COL + " ASC");
-        String result = "";
         assert data != null;
         if (data.moveToFirst()) {
             views.setTextViewText(R.id.tite_text,
@@ -50,8 +54,6 @@ public class AppWidget
             );
             views.setTextViewText(R.id.away_name_text,
                                   data.getString(data.getColumnIndex(DatabaseContract.scores_table.AWAY_COL)));
-            result +=  data.getString(data.getColumnIndex(DatabaseContract.scores_table.HOME_COL));
-            Log.e("widget", "Result: "+result);
         }
         data.close();
 

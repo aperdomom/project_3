@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.activities;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import barqsoft.footballscores.utils.AppWidget;
+import barqsoft.footballscores.R;
+
 /**
  * The configuration screen for the {@link AppWidget AppWidget} AppWidget.
  */
 public class AppWidgetConfigureActivity
         extends Activity {
 
-    private static final String PREFS_NAME      = "barqsoft.footballscores.AppWidget";
+    private static final String PREFS_NAME      = "barqsoft.footballscores.utils.AppWidget";
     private static final String PREF_PREFIX_KEY = "appwidget_";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     EditText mAppWidgetText;
@@ -52,7 +55,7 @@ public class AppWidgetConfigureActivity
 
     // Read the prefix from the SharedPreferences object for this widget.
     // If there is no preference saved, get the default from a resource
-    static String loadTitlePref(Context context, int appWidgetId) {
+    public static String loadTitlePref(Context context, int appWidgetId) {
         SharedPreferences prefs      = context.getSharedPreferences(PREFS_NAME, 0);
         String            titleValue = prefs.getString(PREF_PREFIX_KEY + appWidgetId, null);
         if (titleValue != null) {
@@ -62,7 +65,7 @@ public class AppWidgetConfigureActivity
         }
     }
 
-    static void deleteTitlePref(Context context, int appWidgetId) {
+    public static void deleteTitlePref(Context context, int appWidgetId) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
         prefs.remove(PREF_PREFIX_KEY + appWidgetId);
         prefs.apply();

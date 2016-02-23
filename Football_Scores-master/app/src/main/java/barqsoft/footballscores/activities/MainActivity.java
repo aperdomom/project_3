@@ -1,4 +1,4 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,13 +7,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import barqsoft.footballscores.R;
+import barqsoft.footballscores.activities.AboutActivity;
+import barqsoft.footballscores.fragments.PagerFragment;
+
 public class MainActivity extends ActionBarActivity
 {
     public static int selected_match_id;
-    public static int current_fragment = 2;
-    public static String LOG_TAG = "MainActivity";
-    private final String save_tag = "Save Test";
+    public static int    current_fragment = 2;
+    public static String LOG_TAG          = "MainActivity";
+    private final String save_tag         = "Save Test";
     private PagerFragment my_main;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +27,7 @@ public class MainActivity extends ActionBarActivity
         if (savedInstanceState == null) {
             my_main = new PagerFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, my_main)
+                                       .add(R.id.container, my_main)
                     .commit();
         }
     }
